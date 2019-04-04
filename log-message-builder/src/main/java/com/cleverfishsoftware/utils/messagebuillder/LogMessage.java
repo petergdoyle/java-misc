@@ -23,6 +23,7 @@ public class LogMessage {
         error,
         severe;
     }
+
     private LogMessage(Builder builder) {
         tags = new HashMap<>((Map<? extends String, ? extends String>) builder);
     }
@@ -46,7 +47,7 @@ public class LogMessage {
         private final String body;
         private final String ts;
         private final Logger logger;
-        private Level level; 
+        private Level level;
 
         Builder(Logger logger, Level level, String body) {
             this.logger = logger;
@@ -60,26 +61,28 @@ public class LogMessage {
         }
 
         void log() {
+            LogMessage msg = new LogMessage(this);
+            serializeMsgtoJson(msg);
             switch (level) {
-                case trace: 
-//                    ...
+                case trace:
+                    logger.trace(msg);
                     break;
                 case debug:
-//                    ...
+                    logger.debug(msg);
                     break;
                 case warn:
-//                    ...
+                    logger.warn(msg);
                     break;
                 case info:
-//                    ...
+                    logger.info(msg);
                     break;
-                case error:
-//                    ...
-                    break;
-                case severe: 
-//                    ...
-                    break;
+                default:
+                    logger.error(msg);
             }
+        }
+
+        private void serializeMsgtoJson(LogMessage msg) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
     }
